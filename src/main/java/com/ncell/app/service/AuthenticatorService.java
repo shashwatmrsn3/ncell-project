@@ -26,14 +26,18 @@ public class AuthenticatorService {
         return isValid;
     }
 
+
+
     public void sentOTP(long number){
         Random random = new Random();
         int randomOTP = 100000 + random.nextInt(900000);
+        authenticationDao.invalidateAllOtp(number);
         authenticationDao.saveOTP(number, randomOTP);
     }
 
     public boolean validateOTP(long number, int otp){
-        boolean isValid = false;
-        Optional<Number> numberOpt = authenticationDao.getNumber(number);
+
+        boolean isValid = authenticationDao.getAndDisableOtp(number,otp);
+        return isValid;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
+@CrossOrigin(origins = "*")
 public class AuthenticatorController {
 
 	@Autowired
@@ -30,7 +31,11 @@ public class AuthenticatorController {
 	public ResponseEntity validateOTP(@RequestBody AuthenticationRequest request) {
 		long number = request.getNumber();
 		int otp = request.getOtp();
-
-
+		boolean valid = authenticatorService.validateOTP(number,otp);
+		if(valid){
+			return new ResponseEntity(HttpStatusCode.valueOf(200));
+		}else{
+			return new ResponseEntity(HttpStatusCode.valueOf(404));
+		}
 	}
 }
