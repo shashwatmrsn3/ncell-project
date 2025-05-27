@@ -1,0 +1,1 @@
+INSERT INTO numbers (phone_number) VALUES (9800000001);

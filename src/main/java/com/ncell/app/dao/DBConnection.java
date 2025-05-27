@@ -7,9 +7,9 @@ public class DBConnection {
 
     private static Connection connection;
 
-    private static String URL = "jdbc:mysql://localhost:3306/ncell";
-    private static String username = "root";
-    private static String password = "root";
+    private static String URL = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
+    private static String username = "sa";
+    private static String password = "";
 
     public static Connection getConnection() throws Exception{
 

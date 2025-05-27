@@ -39,11 +39,11 @@ public class AuthenticationDao {
         String getOTPSQL = """
                 select * from otp where
                 phone_number = ? and otp = ? 
-                and is_used = 0 and 
+                and is_used = false and 
                 current_timestamp < expiration_timestamp
                 """;
 
-        String disableOTPSQL = "update otp set is_used = 1 where phone_number = ? and otp = ?";
+        String disableOTPSQL = "update otp set is_used = true where phone_number = ? and otp = ?";
 
         try {
             Connection connection = DBConnection.getConnection();
@@ -71,7 +71,7 @@ public class AuthenticationDao {
 
     public void invalidateAllOtp(long number){
         String sql = """
-                update otp set is_used = 1 where phone_number = ?   
+                update otp set is_used = true where phone_number = ?   
                 """;
         try {
             Connection connection = DBConnection.getConnection();
@@ -86,8 +86,9 @@ public class AuthenticationDao {
 
     public void saveOTP(long number, int otp) {
         String sql = """
-                   insert into otp(otp, phone_number, expiration_timestamp, is_used)
-                   values(?,?,DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 MINUTE),?)
+                 INSERT INTO otp (otp, phone_number, expiration_timestamp, is_used)
+                VALUES (?, ?, DATEADD(MINUTE, 1, CURRENT_TIMESTAMP), ?);
+                                                                               
                 """;
         try {
             Connection connection = DBConnection.getConnection();
