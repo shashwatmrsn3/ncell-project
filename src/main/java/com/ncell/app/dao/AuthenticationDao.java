@@ -62,6 +62,7 @@ public class AuthenticationDao {
 
                 isValid = true;
             }
+            connection.setAutoCommit(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
