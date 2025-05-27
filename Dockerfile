@@ -1,17 +1,22 @@
-# Use official OpenJDK image as base
-FROM eclipse-temurin:21-jdk-alpine
+# Stage 1: Build the app with Maven and JDK 21
+FROM maven:3.9.4-eclipse-temurin-21 AS build
 
-# Set environment variables
-ENV APP_HOME=/usr/app/
+WORKDIR /app
 
-# Create app directory
-WORKDIR $APP_HOME
+# Copy pom.xml and source code
+COPY pom.xml .
+COPY src ./src
 
-# Copy the application jar (adjust name if needed)
-COPY target/*.jar app.jar
+# Build the project and package JAR, skipping tests for faster build
+RUN mvn clean package -DskipTests
 
-# Expose port (adjust according to your app's port)
-EXPOSE 8081
+# Stage 2: Run the app with JDK 21 slim
+FROM eclipse-temurin:21-jdk-jammy
 
-# Run the application
+WORKDIR /app
+
+# Copy the JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
