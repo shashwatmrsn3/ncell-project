@@ -12,3 +12,12 @@ CREATE TABLE otp (
                      is_used BOOLEAN,
                      FOREIGN KEY (phone_number) REFERENCES numbers(phone_number)
 );
+
+CREATE TABLE ncell_centers (
+                               id INT PRIMARY KEY AUTO_INCREMENT,
+                               name VARCHAR(255),
+                               latitude DOUBLE,
+                               longitude DOUBLE
+);
+
+
