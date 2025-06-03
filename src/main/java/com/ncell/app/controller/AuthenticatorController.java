@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AuthenticatorController {
 
+	//test change
+
 	@Autowired
 	private AuthenticatorService authenticatorService;
 	
